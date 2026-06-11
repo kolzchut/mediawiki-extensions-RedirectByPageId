@@ -8,6 +8,7 @@ namespace MediaWiki\Extension\RedirectByPageId\Tests\Integration;
 
 use MediaWiki\Extension\RedirectByPageId\SpecialRedirectByPageId;
 use SpecialPageTestBase;
+use Wikimedia\TestingAccessWrapper;
 
 /**
  * @group Database
@@ -72,8 +73,9 @@ class SpecialRedirectByPageIdTest extends SpecialPageTestBase {
 			'Must not redirect to an index.php?curid= URL (the core behaviour we replace).'
 		);
 		// 302 is emitted implicitly: OutputPage only sets an explicit status
-		// header for 301/303, so a temporary redirect leaves the code at 0.
-		$this->assertNotSame( 301, $response->getStatusCode() );
+		// header for 301/303, so the default temporary redirect leaves the
+		// response code at 0. A regression to 301 would surface here.
+		$this->assertSame( 0, $response->getStatusCode() );
 	}
 
 	public function testPermanentRedirectWhenConfigured(): void {
@@ -89,14 +91,27 @@ class SpecialRedirectByPageIdTest extends SpecialPageTestBase {
 		);
 	}
 
-	public function testInvalidStatusCodeFallsBackToTemporary(): void {
-		$this->overrideConfigValue( 'RedirectByPageIdStatusCode', 308 );
-		$page = $this->getExistingTestPage( 'RedirectByPageId target' );
+	/**
+	 * @dataProvider provideStatusCodes
+	 */
+	public function testRedirectStatusCodeIsValidated( $configured, string $expected ): void {
+		$this->overrideConfigValue( 'RedirectByPageIdStatusCode', $configured );
 
-		[ , $response ] = $this->executeSpecialPage( (string)$page->getId() );
+		$wrapper = TestingAccessWrapper::newFromObject( $this->newSpecialPage() );
 
-		$this->assertNotSame( 301, $response->getStatusCode() );
-		$this->assertNotSame( '', $response->getHeader( 'Location' ) );
+		$this->assertSame( $expected, $wrapper->redirectStatusCode() );
+	}
+
+	public static function provideStatusCodes(): array {
+		return [
+			'permanent 301 honoured' => [ 301, '301' ],
+			'temporary 302 honoured' => [ 302, '302' ],
+			'numeric string honoured' => [ '301', '301' ],
+			'unsupported 303 falls back' => [ 303, '302' ],
+			'unsupported 308 falls back' => [ 308, '302' ],
+			'non-numeric falls back' => [ 'nonsense', '302' ],
+			'zero falls back' => [ 0, '302' ],
+		];
 	}
 
 	public function testUnknownIdShowsNotFoundInsteadOfRedirecting(): void {

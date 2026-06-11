@@ -99,15 +99,27 @@ class SpecialRedirectByPageId extends RedirectSpecialPage {
 		$query = $this->getRedirectQuery( $subpage );
 
 		if ( $target instanceof Title ) {
-			$code = (string)$this->getConfig()->get( 'RedirectByPageIdStatusCode' );
-			if ( $code !== '301' && $code !== '302' ) {
-				$code = '302';
-			}
-			$this->getOutput()->redirect( $target->getFullUrlForRedirect( $query ), $code );
+			$this->getOutput()->redirect(
+				$target->getFullUrlForRedirect( $query ),
+				$this->redirectStatusCode()
+			);
 			return;
 		}
 
 		$this->showNoRedirectPage();
+	}
+
+	/**
+	 * The configured HTTP redirect status, validated.
+	 *
+	 * Only 301 (permanent) and 302 (temporary) are accepted; any other value
+	 * falls back to 302.
+	 *
+	 * @return string '301' or '302'
+	 */
+	protected function redirectStatusCode(): string {
+		$code = (string)$this->getConfig()->get( 'RedirectByPageIdStatusCode' );
+		return ( $code === '301' || $code === '302' ) ? $code : '302';
 	}
 
 	/**
