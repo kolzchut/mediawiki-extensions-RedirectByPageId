@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"redirectbypageid": "The name of the special page [[Special:RedirectByPageId]], shown as its page title.",
+	"redirectbypageid-desc": "{{desc|name=RedirectByPageId|url=https://github.com/kolzchut/mediawiki-extensions-RedirectByPageId}}",
+	"redirectbypageid-notfound-title": "Title of the error page shown when the numeric page ID does not resolve to an existing page.",
+	"redirectbypageid-notfound-text": "Body of the error page shown when the numeric page ID does not resolve to an existing page."
+}

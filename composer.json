@@ -1,0 +1,20 @@
+{
+	"name": "kolzchut/redirect-by-page-id",
+	"description": "MediaWiki extension: redirect to a page's canonical URL by numeric page ID.",
+	"license": "GPL-2.0-or-later",
+	"type": "mediawiki-extension",
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "^43",
+		"mediawiki/minus-x": "^1.1"
+	},
+	"scripts": {
+		"test": [
+			"phpcs -sp --cache",
+			"minus-x check ."
+		],
+		"fix": [
+			"minus-x fix .",
+			"phpcbf"
+		]
+	}
+}

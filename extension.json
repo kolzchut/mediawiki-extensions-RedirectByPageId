@@ -1,0 +1,40 @@
+{
+	"name": "RedirectByPageId",
+	"version": "0.1.0",
+	"author": [
+		"Dror S. [FFS] ([https://www.kolzchut.org.il Kol-Zchut])"
+	],
+	"url": "https://github.com/kolzchut/mediawiki-extensions-RedirectByPageId",
+	"descriptionmsg": "redirectbypageid-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.43.0"
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\RedirectByPageId\\": "src/"
+	},
+	"SpecialPages": {
+		"RedirectByPageId": {
+			"class": "MediaWiki\\Extension\\RedirectByPageId\\SpecialRedirectByPageId",
+			"services": [
+				"TitleFactory"
+			]
+		}
+	},
+	"MessagesDirs": {
+		"RedirectByPageId": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"RedirectByPageIdAlias": "RedirectByPageId.alias.php"
+	},
+	"config": {
+		"RedirectByPageIdStatusCode": {
+			"description": "HTTP status code used for the redirect: 301 (permanent) or 302 (temporary). Defaults to 302 because a page's canonical URL changes when the page is renamed.",
+			"value": 302
+		}
+	},
+	"manifest_version": 2
+}

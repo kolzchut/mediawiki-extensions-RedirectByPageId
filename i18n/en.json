@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"redirectbypageid": "Redirect by page ID",
+	"redirectbypageid-desc": "Redirects to a page's canonical URL given its numeric page ID, with a configurable HTTP status (301/302).",
+	"redirectbypageid-notfound-title": "No such page",
+	"redirectbypageid-notfound-text": "There is no page with the given ID. It may have been deleted."
+}

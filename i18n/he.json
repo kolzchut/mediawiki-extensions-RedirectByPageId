@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"redirectbypageid": "הפניה לפי מזהה דף",
+	"redirectbypageid-desc": "מפנה לכתובת הקנונית של דף לפי מזהה הדף המספרי, עם קוד סטטוס HTTP הניתן להגדרה (301/302).",
+	"redirectbypageid-notfound-title": "אין דף כזה",
+	"redirectbypageid-notfound-text": "אין דף עם המזהה שצוין. ייתכן שהדף נמחק."
+}
