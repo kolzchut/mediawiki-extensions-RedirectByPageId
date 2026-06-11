@@ -74,8 +74,8 @@ class SpecialRedirectByPageIdTest extends SpecialPageTestBase {
 		);
 		// 302 is emitted implicitly: OutputPage only sets an explicit status
 		// header for 301/303, so the default temporary redirect leaves the
-		// response code at 0. A regression to 301 would surface here.
-		$this->assertSame( 0, $response->getStatusCode() );
+		// response status unset (null). A regression to 301 would surface here.
+		$this->assertNull( $response->getStatusCode() );
 	}
 
 	public function testPermanentRedirectWhenConfigured(): void {
@@ -117,7 +117,7 @@ class SpecialRedirectByPageIdTest extends SpecialPageTestBase {
 	public function testUnknownIdShowsNotFoundInsteadOfRedirecting(): void {
 		[ $html, $response ] = $this->executeSpecialPage( '999999999' );
 
-		$this->assertSame( '', $response->getHeader( 'Location' ), 'Must not redirect.' );
+		$this->assertNull( $response->getHeader( 'Location' ), 'Must not redirect.' );
 		// Pages render in qqx here, so messages appear as their keys.
 		$this->assertStringContainsString( 'redirectbypageid-notfound', $html );
 	}
